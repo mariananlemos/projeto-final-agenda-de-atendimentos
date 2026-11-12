@@ -16,7 +16,7 @@ namespace AgendaDeAtendimentos.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.12");
 
-            modelBuilder.Entity("AgendaDeAtendimentos.Models.Profissional", b =>
+            modelBuilder.Entity("AgendaDeAtendimentos.ProfissionalModels.Profissional", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -27,6 +27,10 @@ namespace AgendaDeAtendimentos.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Senha")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

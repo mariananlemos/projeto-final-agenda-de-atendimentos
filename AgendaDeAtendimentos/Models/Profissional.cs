@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AgendaDeAtendimentos.Models;
+namespace AgendaDeAtendimentos.ProfissionalModels;
 
 public class Profissional
 {
@@ -10,5 +10,5 @@ public class Profissional
 
     [Required(ErrorMessage = "A senha é um campo obrigatório")]
     [MinLength(8, ErrorMessage = "A senha precisar ter mais de 8 caracteres")]
-    private string Senha {get; set;}
+    public string Senha {get; set;}
 }

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using AgendaDeAtendimentos.Models;
+using AgendaDeAtendimentos.ProfissionalModels;
 
 namespace AgendaDeAtendimentos.Data;
 
