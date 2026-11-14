@@ -30,7 +30,11 @@ namespace AgendaDeAtendimentos.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Senha")
+                    b.Property<string>("SenhaHash")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SenhaSalt")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

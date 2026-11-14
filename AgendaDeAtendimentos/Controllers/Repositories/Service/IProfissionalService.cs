@@ -1,9 +1,9 @@
-using AgendaDeAtendimentos.ProfissionalModels;
+using AgendaDeAtendimentos.DTO;
 
 namespace AgendaDeAtendimentos.ProfissionalService;
 
 public interface IProfissionalService
 {
-    Task<Profissional> BuscarProfissionalPorIdAsync(string login);
-    Task<Profissional> CadastrarProfissionalAsync(Profissional profissional);
+    Task<ProfissionalCadastro?> BuscarProfissionalPorIdAsync(string login);
+    Task<ProfissionalCadastro> CadastrarProfissionalAsync(ProfissionalCadastro profissionalCadastro);
 }
