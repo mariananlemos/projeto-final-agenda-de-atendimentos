@@ -1,6 +1,63 @@
 @AgendaDeAtendimentos_HostAddress = http://localhost:5292
+# cole aqui o token que volta no login (POST /api/Profissional/Login-Credenciais)
+@token = COLE_O_TOKEN_AQUI
 
-GET {{AgendaDeAtendimentos_HostAddress}}/weatherforecast/
-Accept: application/json
+### Listar clientes
+GET {{AgendaDeAtendimentos_HostAddress}}/api/clientes
+Authorization: Bearer {{token}}
 
-###
+### Buscar cliente por id
+GET {{AgendaDeAtendimentos_HostAddress}}/api/clientes/1
+Authorization: Bearer {{token}}
+
+### Cadastrar cliente
+POST {{AgendaDeAtendimentos_HostAddress}}/api/clientes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Maria Silva",
+  "telefone": "(11) 98888-7777"
+}
+
+### Cadastrar cliente com nome inválido (deve dar 400 no campo "nome")
+POST {{AgendaDeAtendimentos_HostAddress}}/api/clientes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "M",
+  "telefone": "11988887777"
+}
+
+### Editar cliente
+PUT {{AgendaDeAtendimentos_HostAddress}}/api/clientes/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nome": "Maria Souza",
+  "telefone": "11977776666"
+}
+
+### Excluir cliente
+DELETE {{AgendaDeAtendimentos_HostAddress}}/api/clientes/1
+Authorization: Bearer {{token}}
+
+### Listar expediente
+GET {{AgendaDeAtendimentos_HostAddress}}/api/expediente
+Authorization: Bearer {{token}}
+
+### Cadastrar/alterar expediente de segunda-feira (0 = domingo ... 6 = sábado)
+PUT {{AgendaDeAtendimentos_HostAddress}}/api/expediente/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "horaInicio": "08:00",
+  "horaFim": "17:00"
+}
+
+### Excluir expediente de segunda-feira
+DELETE {{AgendaDeAtendimentos_HostAddress}}/api/expediente/1
+Authorization: Bearer {{token}}

@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.OpenApi;
 using AgendaDeAtendimentos.Account;
 using AgendaDeAtendimentos.AuthenticateService;
+using AgendaDeAtendimentos.DTO;
+using AgendaDeAtendimentos.Repositories;
+using AgendaDeAtendimentos.Services;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +28,37 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        // padroniza o erro 400 de validação dos DTOs:
+        // { "mensagem": "Dados inválidos.", "erros": [ { "campo": "nome", "mensagem": "..." } ] }
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var resposta = new ErroResposta { Mensagem = "Dados inválidos." };
+
+            foreach(var item in context.ModelState)
+            {
+                foreach(var erro in item.Value.Errors)
+                {
+                    // deixa o nome do campo com a primeira letra minúscula, igual ao JSON
+                    var campo = item.Key;
+                    if(campo.Length > 0)
+                    {
+                        campo = char.ToLower(campo[0]) + campo.Substring(1);
+                    }
+
+                    resposta.Erros.Add(new ErroCampo
+                    {
+                        Campo = campo,
+                        Mensagem = string.IsNullOrEmpty(erro.ErrorMessage) ? "Valor inválido." : erro.ErrorMessage
+                    });
+                }
+            }
+
+            return new BadRequestObjectResult(resposta);
+        };
+    });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen(options =>
@@ -74,6 +108,10 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 builder.Services.AddScoped<IProfissionalRepository, ProfissionalRepository>();
 builder.Services.AddScoped<IAuthenticate, AuthenticateService>();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
+builder.Services.AddScoped<IExpedienteService, ExpedienteService>();
 
 var app = builder.Build();
 
