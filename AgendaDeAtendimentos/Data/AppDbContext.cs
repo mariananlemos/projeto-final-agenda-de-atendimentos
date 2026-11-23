@@ -15,6 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Cliente> Clientes {get; set;}
     public DbSet<Expediente> Expedientes {get; set;}
     public DbSet<Agendamento> Agendamentos {get; set;}
+    public DbSet<Servico> Servicos {get; set;}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -43,10 +44,17 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Agendamento>(agendamento =>
         {
+            agendamento.Property(a => a.PrecoCobrado).HasColumnType("decimal(10,2)").IsRequired();
+
             // Restrict: o banco também não deixa apagar cliente que tem agendamento
             agendamento.HasOne(a => a.Cliente)
                 .WithMany()
                 .HasForeignKey(a => a.ClienteId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            agendamento.HasOne(a => a.Servico)
+                .WithMany()
+                .HasForeignKey(a => a.ServicoId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

@@ -76,12 +76,26 @@ public class ClienteServiceTests : IDisposable
     public async Task Nao_Deve_Excluir_Cliente_Com_Agendamentos()
     {
         var cliente = await _service.CadastrarAsync(_profissionalA, new ClienteEntrada { Nome = "Maria", Telefone = "1111" });
+        
+        var servico = new Servico
+        {
+            ProfissionalId = _profissionalA,
+            Nome = "Corte",
+            DuracaoMinutos = 30,
+            Preco = 50.00m
+        };
+        _banco.Context.Servicos.Add(servico);
+        await _banco.Context.SaveChangesAsync();
+
         _banco.Context.Agendamentos.Add(new Agendamento
         {
             ProfissionalId = _profissionalA,
             ClienteId = cliente.Id,
+            ServicoId = servico.Id,
             DataHoraInicio = new DateTime(2026, 11, 23, 9, 0, 0),
-            DataHoraFim = new DateTime(2026, 11, 23, 10, 0, 0)
+            DataHoraFim = new DateTime(2026, 11, 23, 10, 0, 0),
+            PrecoCobrado = 50.00m,
+            Status = StatusAgendamento.Agendado
         });
         await _banco.Context.SaveChangesAsync();
 
@@ -90,7 +104,6 @@ public class ClienteServiceTests : IDisposable
         Assert.Equal(ResultadoExclusao.PossuiAgendamentos, resultado);
         Assert.NotNull(await _service.BuscarPorIdAsync(_profissionalA, cliente.Id));
     }
-
     [Fact]
     public async Task Profissional_So_Lista_Os_Proprios_Clientes()
     {

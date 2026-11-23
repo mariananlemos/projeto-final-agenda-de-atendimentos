@@ -112,6 +112,10 @@ builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IExpedienteRepository, ExpedienteRepository>();
 builder.Services.AddScoped<IExpedienteService, ExpedienteService>();
+builder.Services.AddScoped<IServicoRepository, ServicoRepository>();
+builder.Services.AddScoped<IServicoService, ServicoService>();
+builder.Services.AddScoped<IAgendamentoRepository, AgendamentoRepository>();
+builder.Services.AddScoped<IAgendamentoService, AgendamentoService>();
 
 var app = builder.Build();
 
